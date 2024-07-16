@@ -2,7 +2,7 @@
 function getConfig($key)
 {
     $config = [
-      'title' => 'Blog'
+      'title' => 'Blöder Blog'
     ];
     try {
         return $config[$key];
