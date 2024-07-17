@@ -1,10 +1,10 @@
 <?php
-$dein_name = "chris";
+$dein_name = "farzaneh";
 
 $host = '127.0.0.1';
 $db   = $dein_name;
 $user = $dein_name;
-$pass = "chris";
+$pass = "bbq";
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
