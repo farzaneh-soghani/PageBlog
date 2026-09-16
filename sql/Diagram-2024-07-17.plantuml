@@ -1,0 +1,32 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class Artikel {
+   Titel: varchar(200)
+   ArtikelID: int(11)
+}
+class Kommentare {
+   KommentierenderID: int(11)
+   Betreff: varchar(200)
+   Kommentar: text
+   Datum: date
+   KommentarID: int(11)
+}
+class Kommentare_Artikel {
+   KommentarID: int(11)
+   ArtikelID: int(11)
+}
+class Kommentierende {
+   Name: varchar(120)
+   Email: varchar(120)
+   Homepage: varchar(120)
+   KommentierenderID: int(11)
+}
+
+Kommentare          -[#595959,plain]-^  Kommentierende     : "KommentierenderID"
+Kommentare_Artikel  -[#595959,plain]-^  Artikel            : "ArtikelID"
+Kommentare_Artikel  -[#595959,plain]-^  Kommentare         : "KommentarID"
+@enduml

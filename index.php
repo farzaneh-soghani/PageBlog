@@ -1,11 +1,19 @@
 <?php
+// 1. Initialisierung und Laden der Backend-Logik (Autoloader und Klassen)
+include 'system/autoloader.php';
+
+$blogOutput = new Ausgabe();
+// Hier kann bei Bedarf die Methode der Ausgabeklasse aufgerufen werden
+
+// 2. Einbinden des HTML-Headers (enthält Doctype, Meta-Tags und das Öffnen des Body-Tags)
 require_once 'header.php';
 ?>
-<body>
+
 <div class="container">
+    <!-- Hauptnavigation -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#"><?= $title ?></a>
+            <a class="navbar-brand" href="#"><?= htmlspecialchars($title ?? 'Blog') ?></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -25,6 +33,8 @@ require_once 'header.php';
             </div>
         </div>
     </nav>
+
+    <!-- Dynamischer Karussell-Bereich (Slider) -->
     <div class="row">
         <div class="col">
             <div id="topCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -52,6 +62,8 @@ require_once 'header.php';
             </div>
         </div>
     </div>
+
+    <!-- Einbindung der Blog-Artikel -->
     <?php include 'articles.php'; ?>
 </div>
 </body>

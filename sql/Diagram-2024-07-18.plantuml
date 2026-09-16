@@ -1,0 +1,57 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class Artikel {
+   Titel: varchar(200)
+   BilderID: int(11)
+   Text: text
+   AutorID: int(11)
+   Datum: date
+   Carousel: tinyint(1)
+   ArtikelID: int(11)
+}
+class Autoren {
+   Name: varchar(200)
+   AutorID: int(11)
+}
+class Bilder {
+   Pfad: varchar(200)
+   AltText: varchar(200)
+   BilderID: int(11)
+}
+class Kategorie_Artikel {
+   KategorieID: int(11)
+   ArtikelID: int(11)
+}
+class Kategorien {
+   Bezeichnung: varchar(200)
+   KategorieID: int(11)
+}
+class Kommentare {
+   KommentierenderID: int(11)
+   Betreff: varchar(200)
+   Kommentar: text
+   Datum: date
+   KommentarID: int(11)
+}
+class Kommentare_Artikel {
+   KommentarID: int(11)
+   ArtikelID: int(11)
+}
+class Kommentierende {
+   Name: varchar(120)
+   Email: varchar(120)
+   Homepage: varchar(120)
+   KommentierenderID: int(11)
+}
+
+Artikel             -[#595959,plain]-^  Bilder             : "BilderID"
+Kategorie_Artikel   -[#595959,plain]-^  Artikel            : "ArtikelID"
+Kategorie_Artikel   -[#595959,plain]-^  Kategorien         : "KategorieID"
+Kommentare          -[#595959,plain]-^  Kommentierende     : "KommentierenderID"
+Kommentare_Artikel  -[#595959,plain]-^  Artikel            : "ArtikelID"
+Kommentare_Artikel  -[#595959,plain]-^  Kommentare         : "KommentarID"
+@enduml
