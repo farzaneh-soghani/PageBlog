@@ -42,6 +42,19 @@ Das Projekt basiert auf einer sauberen relationalen Datenbankstruktur mit folgen
 1. **Repository klonen:**
    ```bash
    git clone https://github.com/farzaneh-soghani/PageBlog.git
+
+2. **Webserver starten:**
+   * Starten Sie Apache in XAMPP und legen Sie das Projekt in das Verzeichnis Ihres lokalen Webservers (`htdocs`).
+
+3. **Datenbank einrichten:**
+   * Importieren Sie die SQL-Struktur aus dem `sql/`-Ordner in Ihre MariaDB-Datenbank.
+   * Passen Sie die Zugangsdaten in `pdo.php` an.
+
+4. **Projekt im Browser öffnen:**
+   http://localhost/PageBlock/index.php
+
+---
+
 ## 📂 Projektstruktur
 
 ```text
