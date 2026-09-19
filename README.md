@@ -1,5 +1,4 @@
-# PageBlog
-## Moderner PHP Blog
+# PageBlock - Moderner PHP Blog
 
 Ein vollwertiges Blog-Projekt, entwickelt mit nativem PHP, einer relationalen Datenbank (MariaDB/MySQL) und einem modernen Bootstrap 5 UI/UX-Design. Das Projekt demonstriert saubere Softwarearchitektur, objektorientierte Programmierung (OOP) und Best Practices in der Webentwicklung.
 
@@ -43,12 +42,23 @@ Das Projekt basiert auf einer sauberen relationalen Datenbankstruktur mit folgen
 1. **Repository klonen:**
    ```bash
    git clone https://github.com/farzaneh-soghani/PageBlog.git
-## 📂 Projektstruktur  
+## 📂 Projektstruktur
+
 ```text
-PageBlog/
+PageBlock/
 │
-├── system/
-│   └── config.php      # Datenbank-Konfiguration (nicht in Git)
-├── index.php           # Startseite der Anwendung
-├── .gitignore          # Ignorierte Dateien und Ordner
-└── README.md           # Projektdokumentation
+├── css/                 # Stylesheets und Design-Anpassungen
+├── js/                  # JavaScript-Dateien für Interaktivität
+├── sql/                 # SQL-Skripte und Datenbank-Dumps
+├── system/              # Backend-Klassen, Autoloader und Logik
+│
+├── articles.php         # Logik und Template für die Artikelliste (inkl. Filter)
+├── carousel.php         # Dynamischer Slider-Bereich für die Startseite
+├── config.php           # Zentrale Konfigurationsdatei
+├── formtarget.php       # Verarbeitung von Formulardaten
+├── header.php           # HTML-Header (Doctype, Meta-Tags, CSS/JS-Einbindungen)
+├── index.php            # Hauptseite des Blogs
+├── kommentare.php       # Verwaltung und Anzeige der Kommentare
+├── navigation.php       # Dynamische Menü- und Kategorien-Navigation
+├── pdo.php              # Datenbankverbindung über PDO
+└── single.php           # Detailansicht für einzelne Artikel
