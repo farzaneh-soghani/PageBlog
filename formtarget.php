@@ -1,46 +1,53 @@
 <?php
-include 'pdo.php';
+require_once 'pdo.php';
 
-$mysqldate = date('Y-m-d');
+try {
+    $dbConnector = new PDOConnector();
+    $pdo = $dbConnector->getConnection();
 
-// Benutzerdaten in ein assoziatives Array für Prepared Statements verpacken
-$dataKommentierender = [
-    'name'  => $_POST['name'],
-    'email' => $_POST['email'],
-    'url'   => $_POST['url']
-];
+    $mysqldate = date('Y-m-d');
 
-// Prüfen, ob der Kommentierende bereits existiert, um Duplikate zu vermeiden
-$sql = "SELECT KommentierenderID FROM Kommentierende WHERE Name = :name AND Email = :email AND Homepage = :url";
-$stmt = $dbh->prepare($sql);
-$stmt->execute($dataKommentierender);
-$result = $stmt->fetchColumn();
+    $dataKommentierender = [
+        'name'  => $_POST['name'] ?? '',
+        'email' => $_POST['email'] ?? '',
+        'url'   => $_POST['url'] ?? ''
+    ];
 
-if ($result !== false) {
-    $kommentierenderId = $result;
-} else {
-    // Neuen Kommentierenden anlegen, falls noch nicht vorhanden
-    $sql = "INSERT INTO Kommentierende (Name, Email, Homepage) VALUES (:name, :email, :url)";
-    $stmt = $dbh->prepare($sql);
+    $sql = "SELECT KommentierendeID FROM kommentierende WHERE Name = :name AND Email = :email AND URL = :url";
+    $stmt = $pdo->prepare($sql);
     $stmt->execute($dataKommentierender);
-    $kommentierenderId = $dbh->lastInsertId();
+    $result = $stmt->fetchColumn();
+
+    if ($result !== false) {
+        $kommentierenderId = $result;
+    } else {
+        $sql = "INSERT INTO kommentierende (Name, Email, URL) VALUES (:name, :email, :url)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($dataKommentierender);
+        $kommentierenderId = $pdo->lastInsertId();
+    }
+
+    $kommentarSQL = "INSERT INTO Kommentare (KommentierendeID, Betreff, Kommentar, Datum) 
+                     VALUES (:kommentierenderId, :betreff, :kommentar, :mysqldate)";
+
+    $dataKommentar = [
+        'kommentierenderId' => $kommentierenderId,
+        'betreff'           => $_POST['betreff'] ?? '',
+        'kommentar'         => $_POST['kommentar'] ?? '',
+        'mysqldate'         => $mysqldate
+    ];
+
+    $stmt = $pdo->prepare($kommentarSQL);
+    $stmt->execute($dataKommentar);
+    $kommentarId = $pdo->lastInsertId();
+
+    $zwischentabelleSQL = "INSERT INTO Kommentare_Artikel (KommentarID, ArtikelID) VALUES (?, ?)";
+    $stmt = $pdo->prepare($zwischentabelleSQL);
+    $stmt->execute([$kommentarId, $_POST['id'] ?? 1]);
+
+    header("Location: single.php?id=" . ($_POST['id'] ?? 1));
+    exit;
+
+} catch (Exception $e) {
+    echo "Fehler beim Speichern des Kommentars: " . htmlspecialchars($e->getMessage());
 }
-
-// Den eigentlichen Kommentar speichern
-$kommentarSQL = "INSERT INTO Kommentare (KommentierenderID, Betreff, Kommentar, Datum) 
-                 VALUES ($kommentierenderId, :betreff, :kommentar, '$mysqldate')";
-
-$dataKommentar = [
-    'betreff'   => $_POST['betreff'],
-    'kommentar' => $_POST['kommentar'],
-];
-
-$stmt = $dbh->prepare($kommentarSQL);
-$stmt->execute($dataKommentar);
-$kommentarId = $dbh->lastInsertId();
-
-// WICHTIG: Auch versteckte Felder (Hidden Fields wie ArtikelID) gelten als unsichere 
-// Nutzereingaben, da sie im Browser manipuliert werden können. Daher ebenfalls Absicherung via Prepared Statement.
-$zwischentabelleSQL = "INSERT INTO Kommentare_Artikel (KommentarID, ArtikelID) VALUES ($kommentarId, ?)";
-$stmt = $dbh->prepare($zwischentabelleSQL);
-$stmt->execute([$_POST['id']]);

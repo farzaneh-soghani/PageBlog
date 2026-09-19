@@ -1,28 +1,31 @@
 <?php
-// Karussell-Elemente (Bilder und Alternativtexte) als Array definiert
-$items = [
-    [
-        'image' => 'https://picsum.photos/500/150',
-        'alt' => 'Bild 1'
-    ],
-    [
-        'image' => 'https://picsum.photos/500/150',
-        'alt' => 'Bild 2'
-    ],
-    [
-        'image' => 'https://picsum.photos/500/150',
-        'alt' => 'Bild 3'
-    ]
-];
+// Einbindung der Datenbankverbindung
+require_once 'pdo.php';
 
-// Schleife zum dynamischen Generieren der Karussell-Einträge
-foreach ($items as $key => $value) {
-    // Das erste Element erhält die Klasse 'active'
-    $activeClass = ($key === 0) ? 'active' : '';
-    $imageUrl = htmlspecialchars($value['image']);
-    $altText = htmlspecialchars($value['alt']);
+try {
+    // Instanz der Verbindung herstellen
+    $dbConnector = new PDOConnector();
+    $pdo = $dbConnector->getConnection();
 
-    echo '<div class="carousel-item ' . $activeClass . '">';
-    echo '<img src="' . $imageUrl . '" class="d-block w-100" alt="' . $altText . '">';
-    echo '</div>';
+    // Karussell-Bilder dynamisch aus der Tabelle 'Bilder' abrufen
+    $stmt = $pdo->query("SELECT Pfad, AltText FROM Bilder LIMIT 3");
+    $carouselItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+} catch (Exception $e) {
+    $carouselItems = [];
 }
+?>
+
+<?php if (!empty($carouselItems)): ?>
+    <?php foreach ($carouselItems as $key => $item): ?>
+        <?php 
+            // Das erste Element erhält die Klasse 'active' für das Bootstrap-Karussell
+            $activeClass = ($key === 0) ? 'active' : '';
+            $imageUrl = htmlspecialchars($item['Pfad'] ?? '');
+            $altText = htmlspecialchars($item['AltText'] ?? 'Bild');
+        ?>
+        <div class="carousel-item <?= $activeClass ?>">
+            <img src="<?= $imageUrl ?>" class="d-block w-100" alt="<?= $altText ?>">
+        </div>
+    <?php endforeach; ?>
+<?php endif; ?>

@@ -1,38 +1,41 @@
 <?php
-// Einbindung der Datenbankverbindung
-include_once 'pdo.php';
-
-// Artikel-ID dynamisch über URL-Parameter abrufen (Fallback auf ID 1, falls nicht vorhanden)
+// دریافت شناسه مقاله از آدرس (URL) با پشتیبانی از مقدار پیش‌فرض
 $artikelId = $_GET['id'] ?? 1;
 
-// SQL-Abfrage mit Joins, um Kommentare samt Autor und Artikel-Zuordnung zu laden
-$sql = "SELECT K.Betreff, K.Kommentar, K.Datum, KO.Name, KO.Email, KO.Homepage 
-        FROM Kommentare K 
-        JOIN Kommentierende KO ON KO.KommentierenderID = K.KommentierenderID
-        JOIN Kommentare_Artikel KA ON KA.KommentarID = K.KommentarID
-        WHERE KA.ArtikelID = ?";
+try {
+    $dbConnector = new PDOConnector();
+    $pdo = $dbConnector->getConnection();
 
-$stmt = $dbh->prepare($sql);
-$stmt->execute([$artikelId]);
-$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // کوئری برای استخراج کامنت‌ها با استفاده از جداول مرتبط
+    $sql = "SELECT ko.Name, k.Kommentar, k.Datum 
+            FROM Kommentare k
+            JOIN kommentierende ko ON k.KommentierendeID = ko.KommentierendeID
+            JOIN Kommentare_Artikel ka ON k.KommentarID = ka.KommentarID
+            WHERE ka.ArtikelID = ? 
+            ORDER BY k.Datum DESC";
 
-// Kommentare ausgeben, falls vorhanden
-if (!empty($result)) {
-    foreach ($result as $row) {
-        // XSS-Prävention durch htmlspecialchars und sichere Ausgabe mit Bootstrap Cards
-        $name    = htmlspecialchars($row['Name']);
-        $datum   = date('d.m.Y', strtotime($row['Datum']));
-        $betreff = htmlspecialchars($row['Betreff']);
-        $kommentar = nl2br(htmlspecialchars($row['Kommentar'])); // Erhalt von Zeilenumbrüchen
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$artikelId]);
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        echo '<div class="card mt-3">';
-        echo '<div class="card-header">' . $name . ' kommentierte am: ' . $datum . '</div>';
-        echo '<div class="card-body">';
-        echo '<h5 class="card-title">' . $betreff . '</h5>';
-        echo '<p class="card-text">' . $kommentar . '</p>';
-        echo '</div>';
-        echo '</div>';
-    }
-} else {
-    echo '<p class="text-muted mt-3">Noch keine Kommentare vorhanden.</p>';
+} catch (Exception $e) {
+    $result = [];
 }
+?>
+
+<div class="mt-4 mb-5">
+    <h4>Bisherige Kommentare:</h4>
+    <?php if (empty($result)): ?>
+        <p class="text-muted">Noch keine Kommentare vorhanden. Schreibe den ersten!</p>
+    <?php else: ?>
+        <?php foreach ($result as $kommentar): ?>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title fs-6 fw-bold"><?= htmlspecialchars($kommentar['Name']) ?></h5>
+                    <h6 class="card-subtitle mb-2 text-muted fs-7"><?= date('d.m.Y', strtotime($kommentar['Datum'])) ?></h6>
+                    <p class="card-text"><?= nl2br(htmlspecialchars($kommentar['Kommentar'])) ?></p>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</div>

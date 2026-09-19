@@ -1,49 +1,67 @@
 <?php
-// Einbindung der Datenbankverbindung (falls Daten später dynamisch geladen werden)
-include_once 'pdo.php';
+// Einbindung der Datenbankverbindung
+require_once 'pdo.php';
 
-// Artikel- oder Listenelemente als Array definiert
-$items = [
-    [
-        'image' => 'https://picsum.photos/400/250',
-        'image_alt' => 'Bild 1',
-        'text' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
-        'link' => '#',
-    ],
-    [
-        'image' => 'https://picsum.photos/400/250',
-        'image_alt' => 'Bild 2',
-        'text' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
-        'link' => '#',
-    ],
-    [
-        'image' => 'https://picsum.photos/400/250',
-        'image_alt' => 'Bild 3',
-        'text' => 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
-        'link' => '#',
-    ],
-];
+try {
+    // Instanz der Verbindung herstellen
+    $dbConnector = new PDOConnector();
+    $pdo = $dbConnector->getConnection();
 
-// Schleife zur Ausgabe der Listenelemente im Bootstrap-Grid
-foreach ($items as $key => $item):
-    $image = htmlspecialchars($item['image']);
-    $alt = htmlspecialchars($item['image_alt']);
-    $text = htmlspecialchars($item['text']);
-    $link = htmlspecialchars($item['link']);
+    // Prüfen, ob eine Kategorie über die URL übergeben wurde
+    $categoryId = $_GET['kategorie'] ?? null;
+
+    if ($categoryId) {
+        // SQL-Abfrage mit Filter für die ausgewählte Kategorie (über die Verknüpfungstabelle)
+        $sql = "SELECT DISTINCT Artikel.* FROM Artikel
+                JOIN Kategorie_Artikel ON Artikel.ArtikelID = Kategorie_Artikel.ArtikelID
+                WHERE Kategorie_Artikel.KategorieID = ?
+                ORDER BY Artikel.ArtikelID DESC";
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$categoryId]);
+    } else {
+        // Standard-Abfrage: Alle Artikel abrufen, wenn keine Kategorie gewählt wurde
+        $stmt = $pdo->query("SELECT * FROM Artikel ORDER BY ArtikelID DESC");
+    }
+
+    $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+} catch (Exception $e) {
+    $articles = [];
+    $errorMessage = $e->getMessage();
+}
 ?>
-    <div class="row mt-5 align-items-center">
-        <!-- Spalte für das Bild -->
-        <div class="col-md-4">
-            <img src="<?= $image ?>" alt="<?= $alt ?>" class="img-fluid rounded">
-        </div>
-        <!-- Spalte für den Text und Link -->
-        <div class="col-md-6">
-            <p class="d-block"><?= $text ?></p>
-            <p class="text-end">
-                <a href="<?= $link ?>?id=<?= $key ?>" class="text-decoration-none">mehr &gt;&gt;</a>
-            </p>
-        </div>
-        <!-- Leere Spalte für das Layout-Spacing -->
-        <div class="col-md-2"></div>
+
+<?php if (!empty($errorMessage)): ?>
+    <div class="alert alert-danger" role="alert">
+        Fehler beim Laden der Artikel: <?= htmlspecialchars($errorMessage) ?>
     </div>
-<?php endforeach; ?>
+<?php elseif (empty($articles)): ?>
+    <p class="text-center text-muted mt-5">Keine Artikel in dieser Kategorie gefunden.</p>
+<?php else: ?>
+    <?php foreach ($articles as $article): ?>
+        <?php 
+            // Zugriff auf ArtikelID statt id angepasst
+            $id = htmlspecialchars($article['ArtikelID'] ?? '');
+            $text = htmlspecialchars($article['Text'] ?? $article['inhalt'] ?? '');
+            $image = htmlspecialchars($article['Pfad'] ?? 'https://picsum.photos/400/250');
+            $alt = htmlspecialchars($article['AltText'] ?? 'Bild');
+            $link = 'single.php';
+        ?>
+            <div class="row mt-5 align-items-center">
+                <!-- Spalte für das Bild -->
+                <div class="col-md-4">
+                    <img src="<?= $image ?>" alt="<?= $alt ?>" class="img-fluid rounded">
+                </div>
+                <!-- Spalte für den Text und Link -->
+                <div class="col-md-6">
+                    <p class="d-block"><?= $text ?></p>
+                    <p class="text-end">
+                        <a href="<?= $link ?>?id=<?= $id ?>" class="text-decoration-none">mehr &gt;&gt;</a>
+                    </p>
+                </div>
+                <!-- Leere Spalte für das Layout-Spacing -->
+                <div class="col-md-2"></div>
+            </div>
+    <?php endforeach; ?>
+<?php endif; ?>

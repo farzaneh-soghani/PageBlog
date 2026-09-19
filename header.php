@@ -1,6 +1,6 @@
 <?php
 // Standard-Titel definieren, falls kein anderer Titel gesetzt wurde
-$title = $title ?? 'Testseite';
+$title = $title ?? 'PageBlog';
 ?>
 <!DOCTYPE html>
 <html lang="de">

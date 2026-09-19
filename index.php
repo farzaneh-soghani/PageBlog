@@ -2,9 +2,6 @@
 // 1. Initialisierung und Laden der Backend-Logik (Autoloader und Klassen)
 include 'system/autoloader.php';
 
-$blogOutput = new Ausgabe();
-// Hier kann bei Bedarf die Methode der Ausgabeklasse aufgerufen werden
-
 // 2. Einbinden des HTML-Headers (enthält Doctype, Meta-Tags und das Öffnen des Body-Tags)
 require_once 'header.php';
 ?>
@@ -22,7 +19,7 @@ require_once 'header.php';
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link active" aria-current="page" href="index.php">Home</a>
                     </li>
                     <?php include 'navigation.php'; ?>
                 </ul>
