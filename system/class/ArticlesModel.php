@@ -29,7 +29,7 @@ class ArticlesModel extends Model
      */
     public function getAll(int $limit = 0): array
     {
-        $sql = "SELECT Titel, Text, ArtikelID, Pfad, AltText 
+        $sql = "SELECT Artikel.ArtikelID, Titel, Text, Pfad, AltText, Datum 
                 FROM Artikel 
                 JOIN Bilder USING(BilderID) 
                 ORDER BY Datum DESC";

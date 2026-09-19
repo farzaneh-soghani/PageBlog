@@ -10,8 +10,7 @@ class PDOConnector
 
     public function __construct()
     {
-        // خواندن تنظیمات از فایل config
-        require_once __DIR__ . '/../config.php';
+        require_once __DIR__ . '/config.php';
         
         $dsn = "mysql:host=" . getConfig('dbhost') . ";dbname=" . getConfig('db') . ";charset=" . getConfig('dbcharset');
         $this->connection = new PDO($dsn, getConfig('dbuser'), getConfig('dbpass'), $this->pdo_options);

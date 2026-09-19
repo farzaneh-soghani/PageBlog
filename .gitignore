@@ -1,5 +1,21 @@
+# IDE und Editor spezifische Dateien
 .idea/
-/system/config.php
+.vscode/
+*.swp
+*.swo
+nbproject/
+
+# Betriebssystem-Dateien (OS Junk)
 .DS_Store
 Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Protokolle und Logs
 *.log
+*.sqlite
+*.sql
+
+# Lokale Konfigurationsdateien (WICHTIG für Datenschutz und Sicherheit)
+config.php
+pdo.php

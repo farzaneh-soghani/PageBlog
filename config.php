@@ -1,11 +1,11 @@
 <?php
 function getConfig($key) {
     $config = [
-        'title'     => 'Blöder Blog',
+        'title'     => 'PageBlog',
         'dbhost'    => '127.0.0.1',
-        'db'        => 'farzaneh', // نام دیتابیس
-        'dbuser'    => 'root',     // نام کاربری دیتابیس شما (مثلاً root)
-        'dbpass'    => '',         // رمز عبور دیتابیس شما
+        'db'        => 'pageblog', 
+        'dbuser'    => 'root',     
+        'dbpass'    => '',         
         'dbcharset' => 'utf8mb4'
     ];
     
