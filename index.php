@@ -34,7 +34,7 @@ require_once 'header.php';
     <!-- Dynamischer Karussell-Bereich (Slider) -->
     <div class="row">
         <div class="col">
-            <div id="topCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div id="topCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#topCarousel" data-bs-slide-to="0"
                             class="active" aria-current="true" aria-label="Slide 1"></button>

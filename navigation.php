@@ -8,7 +8,7 @@ try {
     $pdo = $dbConnector->getConnection();
 
     // Kategorien dynamisch aus der Datenbank abrufen
-    $stmt = $pdo->query("SELECT KategorieID, Bezeichnung FROM Kategorien");
+    $stmt = $pdo->query("SELECT KategorieID, Bezeichnung FROM kategorien");
     $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (Exception $e) {
