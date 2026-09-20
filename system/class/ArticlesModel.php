@@ -10,13 +10,13 @@ class ArticlesModel extends Model
      */
     public function getSingle(int $id): array 
     {
-        $sql = "SELECT Artikel.ArtikelID, Titel, Text, Name, Bezeichnung, Pfad, Datum, AltText 
-                FROM Artikel
-                JOIN Autoren ON Artikel.AutorID = Autoren.AutorID
-                JOIN Kategorie_Artikel USING (ArtikelID)
-                JOIN Kategorien USING (KategorieID)
-                JOIN Bilder ON Bilder.BilderID = Artikel.BilderID
-                WHERE Artikel.ArtikelID = ?";
+        $sql = "SELECT artikel.ArtikelID, Titel, Text, Name, Bezeichnung, Pfad, Datum, AltText 
+                FROM artikel
+                JOIN autoren ON artikel.AutorID = autoren.AutorID
+                JOIN kategorie_artikel USING (ArtikelID)
+                JOIN kategorien USING (KategorieID)
+                JOIN bilder ON bilder.BilderID = artikel.BilderID
+                WHERE artikel.ArtikelID = ?";
                 
         $stmt = $this->dbh->prepare($sql);
         $stmt->execute([$id]);
@@ -29,9 +29,9 @@ class ArticlesModel extends Model
      */
     public function getAll(int $limit = 0): array
     {
-        $sql = "SELECT Artikel.ArtikelID, Titel, Text, Pfad, AltText, Datum 
-                FROM Artikel 
-                JOIN Bilder USING(BilderID) 
+        $sql = "SELECT artikel.ArtikelID, Titel, Text, Pfad, AltText, Datum 
+                FROM artikel 
+                JOIN bilder USING(BilderID) 
                 ORDER BY Datum DESC";
                 
         // Optionales Limit sicher anhängen, falls größer als 0

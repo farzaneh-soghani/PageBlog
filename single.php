@@ -11,14 +11,14 @@ try {
     $dbConnector = new PDOConnector();
     $pdo = $dbConnector->getConnection();
 
-    // SQL-Abfrage korrigiert (Titel entfernt, da nicht in der Tabelle artikel vorhanden)
-    $sql = "SELECT Artikel.ArtikelID, Text, Name, Bezeichnung, Pfad, Datum, AltText 
-            FROM Artikel
-            LEFT JOIN Autoren ON Artikel.AutorID = Autoren.AutorID
-            LEFT JOIN Kategorie_Artikel USING (ArtikelID)
-            LEFT JOIN Kategorien USING (KategorieID)
-            LEFT JOIN Bilder USING (BilderID)
-            WHERE Artikel.ArtikelID = ?";
+    // SQL-Abfrage mit kleingeschriebenen Tabellennamen korrigiert
+    $sql = "SELECT artikel.ArtikelID, Text, Name, Bezeichnung, Pfad, Datum, AltText 
+            FROM artikel
+            LEFT JOIN autoren ON artikel.AutorID = autoren.AutorID
+            LEFT JOIN kategorie_artikel USING (ArtikelID)
+            LEFT JOIN kategorien USING (KategorieID)
+            LEFT JOIN bilder USING (BilderID)
+            WHERE artikel.ArtikelID = ?";
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$articleId]);

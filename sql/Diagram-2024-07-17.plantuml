@@ -5,28 +5,32 @@ top to bottom direction
 skinparam linetype ortho
 
 class Artikel {
-   Titel: varchar(200)
-   ArtikelID: int(11)
-}
-class Kommentare {
-   KommentierendeID: int(11)
-   Betreff: varchar(200)
-   Kommentar: text
-   Datum: date
-   KommentarID: int(11)
-}
-class Kommentare_Artikel {
-   KommentarID: int(11)
-   ArtikelID: int(11)
-}
-class Kommentierende {
-   Name: varchar(120)
-   Email: varchar(120)
-   Homepage: varchar(120)
-   KommentierendeID: int(11)
+    + Titel: varchar(200)
+    + ArtikelID: int(11)
 }
 
-Kommentare          -[#595959,plain]-^  Kommentierende     : "KommentierendeID"
-Kommentare_Artikel  -[#595959,plain]-^  Artikel            : "ArtikelID"
-Kommentare_Artikel  -[#595959,plain]-^  Kommentare         : "KommentarID"
+class Kommentare {
+    + KommentarID: int(11)
+    + KommentierendeID: int(11)
+    + Betreff: varchar(200)
+    + Kommentar: text
+    + Datum: date
+}
+
+class Kommentare_Artikel {
+    +mentarID: int(11)
+    + ArtikelID: int(11)
+}
+
+class Kommentierende {
+    + KommentierendeID: int(11)
+    + Name: varchar(120)
+    + Email: varchar(120)
+    + Homepage: varchar(120)
+}
+
+Kommentierende ||--o{ Kommentare : "KommentierendeID"
+Artikel ||--o{ Kommentare_Artikel : "ArtikelID"
+Kommentare ||--o{ Kommentare_Artikel : "KommentarID"
+
 @enduml

@@ -27,21 +27,21 @@ try {
         $kommentierendeId = $pdo->lastInsertId();
     }
 
-    $kommentarSQL = "INSERT INTO Kommentare (KommentierendeID, Betreff, Kommentar, Datum) 
+    $kommentarSQL = "INSERT INTO kommentare (KommentierendeID, Betreff, Kommentar, Datum) 
                      VALUES (:kommentierendeId, :betreff, :kommentar, :mysqldate)";
 
     $dataKommentar = [
         'kommentierendeId' => $kommentierendeId,
-        'betreff'           => $_POST['betreff'] ?? '',
-        'kommentar'         => $_POST['kommentar'] ?? '',
-        'mysqldate'         => $mysqldate
+        'betreff'          => $_POST['betreff'] ?? '',
+        'kommentar'        => $_POST['kommentar'] ?? '',
+        'mysqldate'        => $mysqldate
     ];
 
     $stmt = $pdo->prepare($kommentarSQL);
     $stmt->execute($dataKommentar);
     $kommentarId = $pdo->lastInsertId();
 
-    $zwischentabelleSQL = "INSERT INTO Kommentare_Artikel (KommentarID, ArtikelID) VALUES (?, ?)";
+    $zwischentabelleSQL = "INSERT INTO kommentare_artikel (KommentarID, ArtikelID) VALUES (?, ?)";
     $stmt = $pdo->prepare($zwischentabelleSQL);
     $stmt->execute([$kommentarId, $_POST['id'] ?? 1]);
 

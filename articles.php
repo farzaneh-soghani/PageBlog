@@ -16,20 +16,20 @@ try {
     $categoryId = $_GET['kategorie'] ?? null;
 
     if ($categoryId) {
-        // SQL-Abfrage mit Filter für die ausgewählte Kategorie und JOIN für Bilder
-        $sql = "SELECT DISTINCT Artikel.*, b.Pfad, b.AltText FROM Artikel
-                JOIN Kategorie_Artikel ON Artikel.ArtikelID = Kategorie_Artikel.ArtikelID
-                LEFT JOIN Bilder b ON Artikel.BilderID = b.BilderID
-                WHERE Kategorie_Artikel.KategorieID = ?
-                ORDER BY Artikel.ArtikelID DESC";
+        // SQL-Abfrage mit Filter für die ausgewählte Kategorie und JOIN für Bilder (Tabellennamen klein geschrieben)
+        $sql = "SELECT DISTINCT artikel.*, b.Pfad, b.AltText FROM artikel
+                JOIN kategorie_artikel ON artikel.ArtikelID = kategorie_artikel.ArtikelID
+                LEFT JOIN bilder b ON artikel.BilderID = b.BilderID
+                WHERE kategorie_artikel.KategorieID = ?
+                ORDER BY artikel.ArtikelID DESC";
         
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$categoryId]);
     } else {
         // Standard-Abfrage: Alle Artikel inklusive Bilder abrufen
-        $sql = "SELECT Artikel.*, b.Pfad, b.AltText FROM Artikel
-                LEFT JOIN Bilder b ON Artikel.BilderID = b.BilderID
-                ORDER BY Artikel.ArtikelID DESC";
+        $sql = "SELECT artikel.*, b.Pfad, b.AltText FROM artikel
+                LEFT JOIN bilder b ON artikel.BilderID = b.BilderID
+                ORDER BY artikel.ArtikelID DESC";
         $stmt = $pdo->query($sql);
     }
 

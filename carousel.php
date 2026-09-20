@@ -12,11 +12,11 @@ try {
     $dbConnector = new PDOConnector();
     $pdo = $dbConnector->getConnection();
 
-    // Karussell-Artikel zusammen mit den entsprechenden Bildern abrufen
+    // Karussell-Artikel zusammen mit den entsprechenden Bildern abrufen (Tabellennamen klein geschrieben)
     $stmt = $pdo->query("
         SELECT a.Titel, a.Text, b.Pfad, b.AltText 
-        FROM Artikel a 
-        LEFT JOIN Bilder b ON a.BilderID = b.BilderID 
+        FROM artikel a 
+        LEFT JOIN bilder b ON a.BilderID = b.BilderID 
         WHERE a.Carousel = 1 
         LIMIT 3
     ");

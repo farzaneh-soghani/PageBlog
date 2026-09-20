@@ -1,16 +1,14 @@
 <?php
-// دریافت شناسه مقاله از آدرس (URL) با پشتیبانی از مقدار پیش‌فرض
 $artikelId = $_GET['id'] ?? 1;
 
 try {
     $dbConnector = new PDOConnector();
     $pdo = $dbConnector->getConnection();
 
-    // کوئری برای استخراج کامنت‌ها با استفاده از جداول مرتبط
     $sql = "SELECT ko.Name, k.Kommentar, k.Datum 
-            FROM Kommentare k
+            FROM kommentare k
             JOIN kommentierende ko ON k.KommentierendeID = ko.KommentierendeID
-            JOIN Kommentare_Artikel ka ON k.KommentarID = ka.KommentarID
+            JOIN kommentare_artikel ka ON k.KommentarID = ka.KommentarID
             WHERE ka.ArtikelID = ? 
             ORDER BY k.Datum DESC";
 
