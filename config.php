@@ -1,13 +1,15 @@
 <?php
 function getConfig($key) {
-    $isLocal = ($_SERVER['HTTP_HOST'] ?? '') === 'localhost' || str_contains($_SERVER['HTTP_HOST'] ?? '', '127.0.0.1');
+    $host = $_SERVER['HTTP_HOST'] ?? '';
+    
+    $isLocal = (str_contains($host, 'localhost') || str_contains($host, '127.0.0.1'));
     
     $config = [
         'title'     => 'PageBlog',
-        'dbhost'    => 'sqlXXX.infinityfree.com', 
-        'db'        => 'if0_42964925_pageblock_db', 
-        'dbuser'    => 'if0_42964925',            
-        'dbpass'    => '24BBImHqybswtKp',           
+        'dbhost'    => $isLocal ? '127.0.0.1' : 'sql203.infinityfree.com',
+        'db'        => $isLocal ? 'pageblog' : 'if0_42964925_pageblock_db',
+        'dbuser'    => $isLocal ? 'root' : 'if0_42964925',
+        'dbpass'    => $isLocal ? '' : '24BBImHqybswtKp',
         'dbcharset' => 'utf8mb4'
     ];
     
