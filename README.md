@@ -1,6 +1,9 @@
 # PageBlock - Moderner PHP Blog
 
-Ein vollwertiges Blog-Projekt, entwickelt mit nativem PHP, einer relationalen Datenbank (MariaDB/MySQL) und einem modernen Bootstrap 5 UI/UX-Design. Das Projekt demonstriert saubere Softwarearchitektur, objektorientierte Programmierung (OOP) und Best Practices in der Webentwicklung.
+Ein vollwertiges Blog-Projekt, entwickelt mit nativem PHP, einer relationalen Datenbank (MariaDB/MySQL) und einem modernen Bootstrap 5 UI/UX-Design. Das Projekt demonstriert saubere Softwarearchitektur, objektorientierte Programmierung (OOP) und Best Practices in der Webentwicklung.  
+## 🌐 Live Demo
+
+[![Live Demo](https://img.shields.io/badge/Live_Demo-PageBlock-brightgreen?logo=php&logoColor=white)](http://farzaneh-soghani-pageblock.infinityfreeapp.com/)
 
 ---
 
@@ -19,7 +22,9 @@ Ein vollwertiges Blog-Projekt, entwickelt mit nativem PHP, einer relationalen Da
 * **Backend:** PHP 8+ (Objektorientiert, PDO)
 * **Frontend:** HTML5, CSS3, JavaScript, Bootstrap 5
 * **Datenbank:** MariaDB (phpMyAdmin/DBeaver) (Relationale M:N Architektur)
-* **Umgebung:** XAMPP
+* **Lokale Umgebung:** Lokaler Webserver (XAMPP)
+* **Hosting & Server:** InfinityFree (Linux-basierter Webserver)
+* **Deployment-Tools:** FileZilla (FTP-Übertragung)
 * **Versionsverwaltung:** Git & GitHub
 
 ---
