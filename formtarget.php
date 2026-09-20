@@ -19,19 +19,19 @@ try {
     $result = $stmt->fetchColumn();
 
     if ($result !== false) {
-        $kommentierenderId = $result;
+        $kommentierendeId = $result;
     } else {
         $sql = "INSERT INTO kommentierende (Name, Email, URL) VALUES (:name, :email, :url)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute($dataKommentierender);
-        $kommentierenderId = $pdo->lastInsertId();
+        $kommentierendeId = $pdo->lastInsertId();
     }
 
     $kommentarSQL = "INSERT INTO Kommentare (KommentierendeID, Betreff, Kommentar, Datum) 
-                     VALUES (:kommentierenderId, :betreff, :kommentar, :mysqldate)";
+                     VALUES (:kommentierendeId, :betreff, :kommentar, :mysqldate)";
 
     $dataKommentar = [
-        'kommentierenderId' => $kommentierenderId,
+        'kommentierendeId' => $kommentierendeId,
         'betreff'           => $_POST['betreff'] ?? '',
         'kommentar'         => $_POST['kommentar'] ?? '',
         'mysqldate'         => $mysqldate

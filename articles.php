@@ -1,4 +1,9 @@
 <?php
+/**
+ * articles.php
+ * Lädt alle Artikel oder gefilterte Artikel nach Kategorie inklusive der verknüpften Bilder.
+ */
+
 // Einbindung der Datenbankverbindung
 require_once 'pdo.php';
 
@@ -11,17 +16,21 @@ try {
     $categoryId = $_GET['kategorie'] ?? null;
 
     if ($categoryId) {
-        // SQL-Abfrage mit Filter für die ausgewählte Kategorie (über die Verknüpfungstabelle)
-        $sql = "SELECT DISTINCT Artikel.* FROM Artikel
+        // SQL-Abfrage mit Filter für die ausgewählte Kategorie und JOIN für Bilder
+        $sql = "SELECT DISTINCT Artikel.*, b.Pfad, b.AltText FROM Artikel
                 JOIN Kategorie_Artikel ON Artikel.ArtikelID = Kategorie_Artikel.ArtikelID
+                LEFT JOIN Bilder b ON Artikel.BilderID = b.BilderID
                 WHERE Kategorie_Artikel.KategorieID = ?
                 ORDER BY Artikel.ArtikelID DESC";
         
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$categoryId]);
     } else {
-        // Standard-Abfrage: Alle Artikel abrufen, wenn keine Kategorie gewählt wurde
-        $stmt = $pdo->query("SELECT * FROM Artikel ORDER BY ArtikelID DESC");
+        // Standard-Abfrage: Alle Artikel inklusive Bilder abrufen
+        $sql = "SELECT Artikel.*, b.Pfad, b.AltText FROM Artikel
+                LEFT JOIN Bilder b ON Artikel.BilderID = b.BilderID
+                ORDER BY Artikel.ArtikelID DESC";
+        $stmt = $pdo->query($sql);
     }
 
     $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -41,10 +50,12 @@ try {
 <?php else: ?>
     <?php foreach ($articles as $article): ?>
         <?php 
-            // Zugriff auf ArtikelID statt id angepasst
+            // Artikel-ID und Text vorbereiten
             $id = htmlspecialchars($article['ArtikelID'] ?? '');
             $text = htmlspecialchars($article['Text'] ?? $article['inhalt'] ?? '');
-            $image = htmlspecialchars($article['Pfad'] ?? 'https://picsum.photos/400/250');
+            
+            // Bildpfad absichern: Wenn kein Pfad vorhanden ist, Platzhalter verwenden
+            $image = (!empty($article['Pfad'])) ? htmlspecialchars($article['Pfad']) : 'https://picsum.photos/400/250';
             $alt = htmlspecialchars($article['AltText'] ?? 'Bild');
             $link = 'single.php';
         ?>
