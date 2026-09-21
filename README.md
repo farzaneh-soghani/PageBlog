@@ -29,16 +29,17 @@ Ein vollwertiges Blog-Projekt, entwickelt mit nativem PHP, einer relationalen Da
 
 ---
 
-## 🗄️ Datenbank-Architektur (M:N Schema)
+🗄️ Datenbank-Architektur (M:N Schema)
 
 Das Projekt basiert auf einer sauberen relationalen Datenbankstruktur mit folgenden Haupttabellen und Verknüpfungen:
-* `Artikel`: Speichert den Inhalt, Titel, das Veröffentlichungsdatum und zugehörige Kerninformationen der Blog-Beiträge.
-* `Autoren`: Verwaltet die Ersteller und Autoren der jeweiligen Artikel.
-* `Bilder`: Verwaltet Medien, Bilddateien und deren Pfade für die Beiträge.
-* `Kategorien`: Beherbergt die Blog-Kategorien (z. B. PHP & Backend, Databases, Web Development).
-* `Kategorie_Artikel`: Die M:N-Verknüpfungstabelle zwischen Artikeln und Kategorien zur flexiblen Zuordnung.
-* `Kommentare`: Speichert nutzerspezifische Rückmeldungen und Kommentare zu den Artikeln.
-* `Kommentar_Artikel` / Beziehungen: Stellt die Verbindung der Kommentare zu den jeweiligen Beiträgen sicher.
+* **Artikel:** Speichert den Inhalt, Titel, das Veröffentlichungsdatum und zugehörige Kerninformationen der Blog-Beiträge.
+* **Autoren:** Verwaltet die Ersteller und Autoren der jeweiligen Artikel.
+* **Bilder:** Verwaltet Medien, Bilddateien und deren Pfade für die Beiträge.
+* **Kategorien:** Beherbergt die Blog-Kategorien (z. B. PHP & Backend, Databases, Web Development).
+* **Kategorie_Artikel:** Die M:N-Verknüpfungstabelle zwischen Artikeln und Kategorien zur flexiblen Zuordnung.
+* **Kommentare:** Speichert die eigentlichen Rückmeldungen und Kommentare zu den Artikeln.
+* **Kommentare_Artikel:** Die Verknüpfungstabelle zwischen Kommentaren und Artikeln.
+* **Kommentierende:** Verwaltet die Daten der Personen, die Kommentare verfassen.
 
 ---
 
