@@ -1,8 +1,0 @@
-<?php
-$dein_name  = "chris";
-
-$dbhost     = '127.0.0.1';
-$db         = $dein_name;
-$dbuser     = $dein_name;
-$dbpass     = "bbq";
-$dbcharset = 'utf8mb4';
