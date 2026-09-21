@@ -1,0 +1,17 @@
+<?php
+function getConfig($key) {
+    $host = $_SERVER['HTTP_HOST'] ?? '';
+    
+    $isLocal = (str_contains($host, 'localhost') || str_contains($host, '127.0.0.1'));
+    
+    $config = [
+        'title'     => 'PageBlog',
+        'dbhost'    => $isLocal ? '127.0.0.1' : 'YOUR_PRODUCTION_DB_HOST',
+        'db'        => $isLocal ? 'pageblog' : 'YOUR_PRODUCTION_DB_NAME',
+        'dbuser'    => $isLocal ? 'root' : 'YOUR_PRODUCTION_DB_USER',
+        'dbpass'    => $isLocal ? '' : 'YOUR_PRODUCTION_DB_PASSWORD',
+        'dbcharset' => 'utf8mb4'
+    ];
+    
+    return $config[$key] ?? '';
+}
